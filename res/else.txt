@@ -1,0 +1,45 @@
+	else if(type==6)
+	{
+	i_wood item = new i_wood(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+
+	else if(type==6)
+	{
+	i_wood item = new i_wood(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+	else if(type==7)
+	{
+	i_Sticks item = new i_Sticks(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+
+	else if(type==6)
+	{
+	i_wood item = new i_wood(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+	else if(type==7)
+	{
+	i_Sticks item = new i_Sticks(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+	else if(type==8)
+	{
+	i_Wooden Pickaxe item = new i_Wooden Pickaxe(game, x1, y1, this);
+	items.add(item);
+	item.setID(items.size() - 1);
+	noItems++;
+	}
+

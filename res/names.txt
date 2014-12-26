@@ -1,0 +1,11 @@
+dirt
+grass
+stone
+iron
+silver
+wood
+sticks
+wooden pickaxe
+workbench
+stone pickaxe
+iron pickaxe

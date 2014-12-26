@@ -1,0 +1,408 @@
+<config>
+	<Recipe title = "Sticks">
+		<craftingType>0</craftingType>
+		<input amount = "2">6</input>
+		<output amount = "4">7</output>
+	</Recipe>
+	<Recipe title = "Workbench">
+		<craftingType>0</craftingType>
+		<input amount = "4">6</input>
+		<output amount = "1">9</output>
+	</Recipe>
+	<Recipe title = "Wooden Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">6</input>
+		<input amount = "2">7</input>
+		<output amount = "1">8</output>
+	</Recipe>
+		<Recipe title = "Wood">
+		<craftingType>1</craftingType>
+		<input amount = "1">1</input>
+		<output amount = "4">6</output>
+	</Recipe>
+	<Recipe title = "Iron Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">4</input>
+		<input amount = "2">7</input>
+		<output amount = "1">11</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Psh5ese5he5eickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stonhse5ghdthdfghe Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pidfghftyje4576ckaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pi34564e5745785689ckaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pdfghfgj;lklickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Ston6345634563456e Pickaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+		<Recipe title = "Stone Picfgjhfgjhghkjhklkaxe">
+		<craftingType>1</craftingType>
+		<input amount = "3">3</input>
+		<input amount = "2">7</input>
+		<output amount = "1">10</output>
+	</Recipe>
+	
+</config>
