@@ -9,3 +9,4 @@ res\i\Wooden Pickaxe.png
 res\i\Workbench.png
 res\i\StonePickaxe.png
 res\i\IronPickaxe.png
+res\i\SilverPickaxe.png
