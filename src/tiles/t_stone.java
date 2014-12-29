@@ -12,11 +12,9 @@ import something.ItemSpawner;
 public class t_stone extends Tile {
 	private float alpha;
 	private Rectangle rekt;
-	public String image = "res/tiles/t_stone.png";
 	public t_stone(float x, float y, int row, ItemSpawner isp) throws SlickException
 	{
 		super(x, y, row, isp);
-		tileImage = new Image(image);
 		type = 3;
 		rekt = new Rectangle(x, y, 32, 32);
 		tileStrength = 3;

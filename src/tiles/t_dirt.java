@@ -9,14 +9,11 @@ import something.ItemSpawner;
 import something.Game;
 
 public class t_dirt extends Tile{
-	private String image = "res/tiles/t_dirt.png";
-	protected Image tileImage;
 	
 	public t_dirt(float f, float g, int row, ItemSpawner isp) throws SlickException {
 		super(f, g, row, isp);
 
 		type = 1;
-		tileImage = new Image(image);
 		tileStrength = 0;
 	}
 

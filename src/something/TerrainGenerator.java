@@ -3,7 +3,11 @@ package something;
 import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,16 +32,33 @@ public class TerrainGenerator {
 	Random random = new Random();
 	public ArrayList<Integer> tileTypes;
 	public ArrayList world;
+	public ArrayList chunks;
 	public int[][] noiseTest;
+	Chunk[] chunk;
+	private boolean newGame = false;
 	double generate;
 	Music sound1;
+	int loadedChunks;
+	private int numChunks;
+	private int chunkSize = 40;
+	private int chunksToLoad = 5;
 	String filename;
+	private static String currentDirectory = new File("").getAbsolutePath();
 	ItemSpawner isp;
+	String mapName = "testMap2";
 	Image tempImage;
-	public TerrainGenerator(Game gm, Inventory inv, ItemSpawner iisp, int maxX, int maxY) throws SlickException, IOException
+	Image[] allImages;
+	int tileSize;
+	public TerrainGenerator(Game gm, Inventory inv, ItemSpawner iisp, int maxX, int maxY, int tileSize) throws SlickException, IOException
 	{
+		chunk = new Chunk[chunksToLoad];
+		this.tileSize = tileSize;
 		sound1 = new Music("res/sounds/mega goat.wav");
 		this.maxX = maxX;
+		game = gm;
+		chunks = new ArrayList();
+		world = new ArrayList();
+		isp = iisp;
 		this.maxY = maxY;
 		worldArray = new int[maxX][maxY];
 		noiseTest = new int[maxX][maxY];
@@ -50,44 +71,196 @@ public class TerrainGenerator {
 		tileTypes.add(5);
 		tileTypes.add(6);
 		tileTypes.add(9);
-		game = gm;
-		world = new ArrayList();
-		isp = iisp;
+		allImages = new Image[9];
+		allImages[0] = new Image("res/tiles/t_dirt.png");
+		allImages[1] = new Image("res/tiles/t_grass.png");
+		allImages[2] = new Image("res/tiles/t_stone.png");
+		allImages[3] = new Image("res/tiles/t_iron.png");
+		allImages[4] = new Image("res/tiles/t_silver.png");
+		allImages[5] = new Image("res/tiles/t_Wood.png");
+		allImages[8] = new Image("res/tiles/t_Workbench.png");
+		if(maxX%chunkSize != 0) //Determine the number of chunks
+		{
+			numChunks = (maxX - maxX%chunkSize) / chunkSize + 1; 
+		}
+		else
+		{
+			numChunks = maxX/chunkSize; 
+		}
+		Path save = Paths.get(currentDirectory+"/maps/" + mapName + "/");
+		if(!Files.exists(Paths.get(currentDirectory+"/maps/")))
+		{
+			File x = new File(currentDirectory+"/maps/");
+			x.mkdir();
+		}
+		if (Files.exists(save)) {
+		    System.out.println("map exists!");
+		    initializeChunks();
+		}
+		else
+		{
+			File f = new File(currentDirectory+"/maps/" + mapName + "/");
+			f.mkdir();
+			System.out.println("map created!");
+			generateWorld();
+			initializeChunks();
+		}
+		System.out.println(numChunks+ " Chunks. ");
+
+		
+	}
+	public void initializeChunks() throws FileNotFoundException, SlickException, IOException
+	{
+		if(((game.cam.camPosX() - game.cam.camPosX() % chunkSize) / chunkSize) - 1 >= 0)
+		{
+			for(int i = 0; i < chunksToLoad; i++)
+			{
+				Chunk chunks = new Chunk((int) ((game.cam.camPosX() - game.cam.camPosX() % chunkSize) / chunkSize) - 1,this,isp,filename, false);
+				chunk[i] = chunks;
+			}
+		}
+		else
+		{
+			for(int i = 0; i < chunksToLoad; i++)
+			{
+				Chunk chunks = new Chunk(i,this,isp,mapName,false);
+				chunk[i] = chunks;
+			}
+		}
+	}
+	
+	public int returnChunksToLoad()
+	{
+		return chunksToLoad;
+	}
+	public int returnTileSize()
+	{
+		return tileSize;
+	}
+	public void setLoadedChunks() throws FileNotFoundException, SlickException, IOException
+	{
+		int lastLoadedChunks = loadedChunks;
+	/*	if(game.cam.camPosX() < 1*chunkSize*tileSize)
+		{
+			loadedChunks = 0;
+		}
+		else if(game.cam.camPosX() > (numChunks-1) * chunkSize * tileSize)
+		{
+			loadedChunks = numChunks - chunksToLoad;
+		}
+		else wd*/
+		
+			loadedChunks = (int)((game.cam.camPosX() - game.cam.camPosX() % (chunkSize * tileSize)) / (chunkSize * tileSize)-2);
+			//< chunk[1].returnID() * chunkSize * tileSize;
+			
+		if(loadedChunks < 0)
+		{
+			loadedChunks = 0;
+		}
+		else if (loadedChunks > numChunks)
+		{
+			System.out.println("numChunks " + numChunks);
+			loadedChunks = numChunks-chunksToLoad;
+		}
+		
+		if(lastLoadedChunks!=loadedChunks)System.out.println("Loaded Chunks: " + loadedChunks);
+		if(lastLoadedChunks == loadedChunks) //if nothing's changed...
+		{
+			//do nothing
+		}
+		else if(loadedChunks > lastLoadedChunks) 
+		{
+			System.out.println("This code has run");
+			chunk[0] = null;
+			for(int i = 0; i <= chunksToLoad; i++)
+			{
+				if(i < chunksToLoad && i + 1 < chunksToLoad)
+				{
+					chunk[i] = chunk[i+1];
+					System.out.println("So has this");
+				}
+			}
+			Chunk chunkz = new Chunk(loadedChunks+chunksToLoad-1, this, isp, mapName, false);
+			chunk[chunksToLoad-1] = (Chunk) chunkz;
+		}
+		else if(loadedChunks < lastLoadedChunks)
+		{/*
+			System.out.println("THIS HAS RUN");
+			chunk[4] = null;
+			chunk[4] = chunk[3];
+			chunk[3] = chunk[2];
+			chunk[2] = chunk[1];
+			chunk[1] = chunk[0];*/
+			
+			for(int i = chunksToLoad-1; i > 0; i--)
+			{
+				if(i - 1 >= 0)
+				{
+					chunk[i] = chunk[i-1];
+				}
+			}
+			Chunk chunkz = new Chunk(loadedChunks, this, isp, mapName, false);
+			chunk[0] = (Chunk) chunkz;
+		}
+	}
+	
+	
+
+	public void replaceTile(Tile t1, int type, int x, int y) throws SlickException
+	{
+		world.remove(t1);
+		t1 = null;
+	//	isp.getGame().terrain.createTile(x*32, y*32, 2, y);
+	//	worldArray[x][y] = type; 
+	}
+
+	public int getWorldArray(int x,int y)
+	{
+		if(x<maxX && x >=0 && y < maxY && y >=0)return worldArray[x][y];
+		else
+			return 0;
+	}
+	public void setWorldArray(int x, int y, int value, Chunk chun, boolean bool, float xloc, float yloc) throws SlickException
+	{
+		int xx = x - chun.returnID() * chunkSize;
+		chun.setTile(xx,y,value, bool, xloc, yloc);
+		//if(x<chunkSize && x >=0 && y < maxY && y >=0)chun.returnRelativeTiles()[xx][y] = value;
+	
+	}
+	
+	
+	public void render(GameContainer gc,Graphics g)
+	{
+		//tempImage.draw(256 - game.cam.camPosX(),maxY * game.tileSize - worldRow[8]*game.tileSize - game.cam.camPosY());
+		for(int i = 0; i < chunksToLoad; i++)
+		{
+			chunk[i].render(gc, g);
+		}
+		//Tile tile = (Tile) world.get(0);
+		//tile.render(gc, g);
+	}
+
+	public void update(GameContainer gc, int arg1) throws FileNotFoundException, SlickException, IOException
+	{
+		setLoadedChunks();
+		for(int i = 0; i < chunksToLoad; i++)
+		{
+			chunk[i].update(gc, arg1);
+		}
+	}
+	private void generateWorld() throws IOException, SlickException
+	{
+		System.out.println(game.getWidth() + " width");
 		worldRow[0] = game.randomInt(maxY-40,maxY - 10);
-		int[][] noises = new int[maxX][maxY];
-		generate = 8.678106215752825;
+		
+		generate = 12.678106215752825;
 		System.out.print(generate);
 		System.out.println("");
 		filename = Double.toString(generate);
 		System.out.println("Filename = "+filename);
 		generateNoise(maxX, maxY, 5 + generate);
-
-		/*	for(int w = 0; w < maxX; w++)
-		{
-			worldRows++;
-			newX = w * 32;
-			if(w > 0)
-			{
-				worldRow[w] = worldRow[w-1] + randomInt(-1,1);
-				if(worldRow[w] < 1)
-				{
-					worldRow[w] = 1;
-				}
-				else if(worldRow[w] > 99)
-				{
-					worldRow[w] = 99;
-				}
-			}
-			for(int h = 1; h < worldRow[w]; h++)
-			{
-				createTile(newX,maxY*32 - 32 * h, randomInt(1,1), h, w);
-				
-			}
-		}*/
-		
-		
-		
-		for(int i = 0; i < maxX; i++)
+	
+		for(int i = 0; i < maxX; i++) //Generate surface height
 		{
 			if(i > 0)
 			{
@@ -113,26 +286,13 @@ public class TerrainGenerator {
 				}
 			}
 		}
-	  
-	    //noises = game.GenerateWhiteNoise(maxX,maxY);
-		int caveSurfaces= 0, chestsGenerated = 0;
+	  	int caveSurfaces= 0, chestsGenerated = 0;
 	    for(int i = 0; i < maxX; i ++)
 	    {
 	    	for(int y = 0; y < maxY; y ++)
 	    	{
-	/*    		if(y >= worldRow[i] - 4)
-	    		{
-	    			noises[i][y] = 0;
-	    		}
-	    		if(noises[i][y] == 2)
-	    		{
-	    			noises[i][y] = 1;
-	    		}
-	   		if(y < worldRow[y] - 4 && noises[i][y] != 0)
-	    		{
-	    			worldArray[i][y] = noises[i][y];
-	    		}*/
-	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 3|| noiseTest[i][y] == 4  ||noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8))
+
+	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5))
 	    		{
 	    			worldArray[i][y] = 0;
 	    			//generate chests//
@@ -146,7 +306,7 @@ public class TerrainGenerator {
 	    				 }
 	    			}
 	    		}
-	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 || noiseTest[i][y] == 9 || noiseTest[i][y]==10|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2))
+	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 || noiseTest[i][y] == 9 || noiseTest[i][y]==10|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2 ||noiseTest[i][y] == 3|| noiseTest[i][y] == 4))
 	    		{
 
 	    			worldArray[i][y] = 3;
@@ -164,15 +324,24 @@ public class TerrainGenerator {
 	    }
 	    System.out.println(caveSurfaces + "Open cave surfaces");
 	    System.out.println(chestsGenerated + "Chests generated");
-	    
-		for(int i = 0; i < maxX ; i ++)
-		{
-			for(int y = 0; y < maxY ; y++)
+	    for(int i = 0; i < 10; i++)
+	    {
+	    }
+	    for(int c = 0; c <= numChunks-1; c++)
+	    {
+		    int[][] tileArray = new int[chunkSize][maxY]; 
+			for(int i = 0; i <= chunkSize-1; i++)
 			{
-				createTile(i * game.tileSize, maxY*game.tileSize - game.tileSize * y, worldArray[i][y], y);
-				
+				for(int y = 0; y <= maxY-1; y++)
+				{
+					int temp = i+c*chunkSize;	
+					if(temp < maxX)tileArray[i][y] = worldArray[temp][y];	
+				}
 			}
-		}
+
+			Chunk chunk = new Chunk(tileArray, c, this, isp, mapName, true);
+			chunks.add(chunk);
+	    }
 		BufferedImage image = new BufferedImage(maxX, maxY, BufferedImage.TYPE_INT_RGB);
 		int rgb = 0;
 		for(int x = 0; x < maxX; x ++)
@@ -218,10 +387,6 @@ public class TerrainGenerator {
 		sound1.play();
 
 	}
-	public ArrayList<Integer> returnTileTypes()
-	{
-		return tileTypes;
-	}
 	private void generateCluster(int x, int y, int type)
 	{
 		int size = random.nextInt(15) + 4;
@@ -251,120 +416,6 @@ public class TerrainGenerator {
 				{
 					if(worldArray[x][y]!=0)worldArray[x][y] = type;
 				}
-		}
-	}
-	
-	public Tile getWorld(int i)
-	{
-		Tile tile = (Tile) world.get(i);
-		return tile;
-	}
-	public int getSize()
-	{
-		return world.size();
-	}
-	public void addTile(Tile tile)
-	{
-		world.add(tile);
-	}
-	public void removeTile(int i)
-	{
-		world.remove(i);
-	}
-	public void removeTile(Tile t)
-	{
-		world.remove(t);
-		t = null;
-	}
-	public void replaceTile(Tile t1, int type, int x, int y) throws SlickException
-	{
-		world.remove(t1);
-		t1 = null;
-	//	isp.getGame().terrain.createTile(x*32, y*32, 2, y);
-	//	worldArray[x][y] = type; 
-	}
-
-	public int getWorldArray(int x,int y)
-	{
-		if(x<maxX && x >=0 && y < maxY && y >=0)return worldArray[x][y];
-		else
-			return 0;
-	}
-	public void setWorldArray(int x, int y, int value) throws SlickException
-	{
-		if(x<maxX && x >=0 && y < maxY && y >=0)worldArray[x][y] = value;
-		
-	}
-	
-	public void init() throws SlickException
-	{
-
-		
-	}
-	public void createTile(int tileX, int tileY, int tileType, int row) throws SlickException
-	{
-	//	if(h < worldRow[row] -1)
-	//	{
-			if(tileType == 1)
-			{
-				t_dirt tile = new t_dirt(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-			else if(tileType == 2)
-			{
-				t_grass tile = new t_grass(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-			else if( tileType == 3)
-			{
-				t_stone tile = new t_stone(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-			else if( tileType == 4)
-			{
-				t_iron tile = new t_iron(tileX, tileY, row, isp);
-				world.add(tile);	
-			}
-			else if( tileType == 5)
-			{
-				t_silver tile = new t_silver(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-			else if(tileType == 6)
-			{
-				t_Wood tile = new t_Wood(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-			else if (tileType == 9)
-			{
-				t_Workbench tile = new t_Workbench(tileX, tileY, row, isp);
-				world.add(tile);
-			}
-
-	
-			tempImage = new Image("res/tiles/Sticks and pickaxes.png");
-
-	}
-	
-	public void render(GameContainer gc,Graphics g)
-	{
-		tempImage.draw(256 - game.cam.camPosX(),maxY * game.tileSize - worldRow[8]*game.tileSize - game.cam.camPosY());
-		for(int i = 0; i < world.size(); i++)
-		{
-			Tile tile = (Tile) world.get(i);
-			tile.render(gc, g);
-		}
-		//Tile tile = (Tile) world.get(0);
-		//tile.render(gc, g);
-		for(int i = 0; i < maxX ; i ++)
-		{
-			for(int y = 0; y < maxY ; y++)
-			{
-				//g.setColor(Color.green);
-				//g.drawString(dicks + "", i * 32, maxY*32 - 32 * y);
-			//	g.setColor(Color.red);
-				//g.drawString(worldArray[i][y] + "" ,i * 32 + 20, maxY*32 - 32 * y);
-			}
 		}
 	}
 	public void generateNoise(float WIDTH, float HEIGHT, double FEATURE_SIZE) throws IOException
@@ -400,13 +451,47 @@ public class TerrainGenerator {
 		ImageIO.write(image, "png", new File("noiseasd.png"));
 
 	}
-	public void update(GameContainer gc, int arg1)
+	public Image returnImage(int i)
 	{
-		for(int i = 0; i < world.size(); i++)
-		{
-			Tile tile = (Tile) world.get(i);
-			tile.update(gc);
-		}
+		return allImages[i-1];
+	}
+	public int returnMaxY()
+	{
+		return maxY;
+	}
+	public int returnChunkSize()
+	{
+		return chunkSize;
+	}
+	public ArrayList<Integer> returnTileTypes()
+	{
+		return tileTypes;
+	}
+	public Tile getWorld(int i)
+	{
+		Tile tile = (Tile) world.get(i);
+		return tile;
+	}
+	public int getSize()
+	{
+		return world.size();
+	}
+	public void addTile(Tile tile)
+	{
+		world.add(tile);
+	}
+	public void removeTile(int i, Chunk chun)
+	{
+		chun.getTiles().remove(i);
+	}
+	public void removeTile(Tile t)
+	{
+		world.remove(t);
+		t = null;
+	}
+	public Chunk[] returnChunks()
+	{
+		return chunk;
 	}
 
 }

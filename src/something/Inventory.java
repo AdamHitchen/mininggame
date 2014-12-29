@@ -93,6 +93,7 @@ private Game game;
 		addItem(0, 0);
 		addItem(6,4);
 		addItem(6,4);
+		addItem(10,1);
 	}
 	public int returnID()
 	{

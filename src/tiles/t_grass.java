@@ -9,10 +9,10 @@ import org.newdawn.slick.geom.Vector2f;
 import something.ItemSpawner;
 
 public class t_grass extends Tile{
-	public String image = "res/tiles/t_grass.png";
+	
 	public t_grass(float x, float y, int row, ItemSpawner isp) throws SlickException {
 		super(x, y, row, isp);
-		tileImage = new Image(image);
+
 		type = 2;
 		tileStrength = 0;
 	}
@@ -20,11 +20,13 @@ public class t_grass extends Tile{
 	{
 		if(loaded) 
 		{
-			tileImage.draw(position.x-isp.getGame().cam.camPosX(),position.y-5-isp.getGame().cam.camPosY());
+			//tileImage.draw(position.x-isp.getGame().cam.camPosX(),position.y-5-isp.getGame().cam.camPosY());
+			isp.getGame().terrain.returnImage(type).draw(position.x-isp.getGame().cam.camPosX(),position.y-5-isp.getGame().cam.camPosY());
+
 		}
 	}
 	public int returnHeight()
 	{
-		return tileImage.getHeight() - 5;
+		return isp.getGame().terrain.returnImage(type).getHeight() - 5;
 	}
 }

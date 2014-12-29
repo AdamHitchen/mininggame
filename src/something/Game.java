@@ -1,5 +1,7 @@
 package something;
 
+import java.awt.List;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -25,11 +27,13 @@ import org.newdawn.slick.geom.Rectangle;
 
 
 
+
+
 import entities.*;
 import items.*;
 import something.*;
 import tiles.*;
-public class Game extends BasicGame implements Serializable{
+public class Game extends BasicGame {
 	private ArrayList tarpeys;
 	public ArrayList players;
 	private ArrayList bullets;
@@ -43,8 +47,8 @@ public class Game extends BasicGame implements Serializable{
 	ItemSpawner isp; 
 	public Random random;
 	public TerrainGenerator terrain;
-	public int maxX =100;
-	int maxY = 100;
+	public int maxX = 800;
+	int maxY = 2000;
 	Crafting craft;
 	public Camera cam;
 	private int width = 1280, height = 720;
@@ -72,6 +76,7 @@ public class Game extends BasicGame implements Serializable{
 		players = new ArrayList();
 		bullets = new ArrayList();
 		activeTool = 1;
+
 
 	}
 	
@@ -142,15 +147,15 @@ public class Game extends BasicGame implements Serializable{
 		cam = new Camera(this);
 		inv = new Inventory(this, cam);
 		try {
-			terrain = new TerrainGenerator(this, inv, isp, maxX, maxY);
+			terrain = new TerrainGenerator(this, inv, isp, maxX, maxY, tileSize);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		craft = new Crafting(this, inv);
 		rect = new Rectangle(20,20,30,30);
-		gc.setTargetFrameRate(60);
-		Player player = new Player(120,120,this);
+		//gc.setTargetFrameRate(60);
+		Player player = new Player(100,0,this);
 		players.add(player);
 		activeTool = 1;
 
@@ -208,7 +213,15 @@ public class Game extends BasicGame implements Serializable{
 		
 
 		isp.update(gc, arg1);
-		terrain.update(gc, arg1);
+		try {
+			terrain.update(gc, arg1);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(gc.getInput().isKeyDown(Input.KEY_1))
 		{
 			activeTool = 1;
@@ -287,10 +300,25 @@ public class Game extends BasicGame implements Serializable{
 			}*/
 			if (inv.returnMiningTools().contains(activeID))
 			{
+				int currentChunk = 0;
+				Chunk[] chunk = terrain.returnChunks();
 				boolean canMine = false;
-				for(int i = 0; i < terrain.getSize(); i++)
+				int chunkSize = terrain.returnChunkSize();
+				int tileSize = terrain.returnTileSize();
+				int tempInt = (int)((gc.getInput().getAbsoluteMouseX() + cam.camPosX() - ((gc.getInput().getAbsoluteMouseX() + cam.camPosX()) % (chunkSize * tileSize))) / (chunkSize * tileSize));
+				System.out.println("tempInt  = " + tempInt);
+				for(int i = 0; i < terrain.returnChunks().length; i++)
 				{
-					Tile tile = (Tile) terrain.getWorld(i);
+					if(tempInt == chunk[i].returnID() )
+					{
+						currentChunk = i;
+					}
+				}
+				System.out.println("currentChunk = " + currentChunk);
+				for(int i = 0; i < chunk[currentChunk].getTiles().size(); i++)
+				{
+					Tile tile = (Tile) chunk[currentChunk].getTiles().get(i);
+					
 					if(gc.getInput().getAbsoluteMouseX() + cam.camPosX() > tile.getPos().x && gc.getInput().getAbsoluteMouseX() + cam.camPosX()< tile.getPos().x + tile.returnWidth()
 							&& gc.getInput().getAbsoluteMouseY()+ cam.camPosY() > tile.getPos().y && gc.getInput().getAbsoluteMouseY() + cam.camPosY()< tile.getPos().y + tile.returnHeight())
 					{
@@ -310,13 +338,15 @@ public class Game extends BasicGame implements Serializable{
 							float xloc =  (gc.getInput().getAbsoluteMouseX() + cam.camPosX()) - ((gc.getInput().getAbsoluteMouseX()+ cam.camPosX()) % tileSize);
 							float yloc =  (gc.getInput().getAbsoluteMouseY()+ cam.camPosY()) - (gc.getInput().getAbsoluteMouseY() + cam.camPosY()) % tileSize;
 							int x = (int) xloc / tileSize;
-							int y = (int) (((maxX*tileSize) - yloc) / tileSize);
-							if(calcDistance(player.getPosition().x + player.tarpeyFace.getWidth()/2,player.getPosition().y + player.tarpeyFace.getHeight()/2,tile.getPos().x,tile.getPos().y) < tileSize*8)
+							int y = (int) (((maxY*tileSize) - yloc) / tileSize);
+							if(calcDistance(player.getPosition().x + player.playerImage.getWidth()/2,player.getPosition().y + player.playerImage.getHeight()/2,tile.getPos().x,tile.getPos().y) < tileSize*8)
 							{
 								tile.drop();
 								tile = null;
-								terrain.removeTile(i);
-								terrain.setWorldArray(x, y, 0);
+								terrain.removeTile(i, chunk[currentChunk]);
+								System.out.println("trying to remove chunk");
+								terrain.setWorldArray(x, y, 0,chunk[currentChunk], false,xloc,yloc);
+								System.out.println("Trying to update array");
 							}
 						}
 					}
@@ -324,6 +354,7 @@ public class Game extends BasicGame implements Serializable{
 			}
 			else if(terrain.returnTileTypes().contains(activeID) && !craft.returnUI())
 			{
+				
 				float xloc;
 				float yloc;
 				xloc =  (gc.getInput().getAbsoluteMouseX() + cam.camPosX()) - ((gc.getInput().getAbsoluteMouseX()+ cam.camPosX()) % tileSize);
@@ -331,7 +362,24 @@ public class Game extends BasicGame implements Serializable{
 				int x = (int) xloc / tileSize;
 				int y = (int) (((maxY*tileSize) - yloc) / tileSize);
 				boolean canPlace = true;
-				if(terrain.getWorldArray(x,y) == 0)
+				int currentChunk = 0;
+				Chunk[] chunk = terrain.returnChunks();
+				boolean canMine = false;
+				int chunkSize = terrain.returnChunkSize();
+				int tileSize = terrain.returnTileSize();
+				int tempInt = (int)((gc.getInput().getAbsoluteMouseX() + cam.camPosX() - ((gc.getInput().getAbsoluteMouseX() + cam.camPosX()) % (chunkSize * tileSize))) / (chunkSize * tileSize));
+				System.out.println("tempInt  = " + tempInt);
+				for(int i = 0; i < terrain.returnChunks().length; i++)
+				{
+					if(tempInt == chunk[i].returnID() )
+					{
+						currentChunk = i;
+					}
+				}
+				System.out.println("currentChunk = " + currentChunk);
+				int xx = x - chunk[currentChunk].returnID() * chunkSize;
+
+				if(chunk[currentChunk].returnRelativeTiles()[xx][y] == 0)
 				{
 					if((gc.getInput().getAbsoluteMouseX() + cam.camPosX() > player.getPosition().x &&  gc.getInput().getAbsoluteMouseX() + cam.camPosX() < player.getPosition().x + player.getWidth() 
 						&& gc.getInput().getAbsoluteMouseY() +cam.camPosY() >  player.getPosition().y && gc.getInput().getAbsoluteMouseY() + cam.camPosY() < player.getPosition().y + player.getHeight())) {canPlace = false;}
@@ -339,9 +387,10 @@ public class Game extends BasicGame implements Serializable{
 					if(canPlace){
 						if(inv.haveItem(activeID))
 						{
-							terrain.createTile(x*tileSize, maxY*tileSize - tileSize * y, activeID, x);
+						//	terrain.createTile(x*tileSize, maxY*tileSize - tileSize * y, activeID, x);
 							inv.removeItem(activeID);
-							terrain.setWorldArray(x,y, activeID);
+							terrain.setWorldArray(x,y, activeID, chunk[currentChunk], true,xloc,yloc);
+							
 						}
 					}
 				}

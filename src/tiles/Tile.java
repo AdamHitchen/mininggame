@@ -12,7 +12,7 @@ public class Tile {
 	private int Row;
 	protected Vector2f position;
 	protected ItemSpawner isp;
-	protected String image = "res/tiles/t_dirt.png";
+
 	protected Image tileImage;
 	protected boolean loaded;
 	protected int tileStrength;
@@ -25,19 +25,21 @@ public class Tile {
 		position = new Vector2f(0,0);
 		position.x = x;
 		position.y = y;
-		tileImage = new Image(image);
+
 	}
 	public Image tileImage()
 	{
-		return tileImage;
+		return isp.getGame().terrain.returnImage(type);
 	}
 	public int returnHeight()
 	{
-		return tileImage.getHeight();
+		return isp.getGame().terrain.returnImage(type).getHeight();
 	}
 	public int returnWidth()
 	{
-		return tileImage.getWidth();
+		
+		 return isp.getGame().terrain.returnImage(type).getWidth();
+
 	}
 	public void init(GameContainer gc) throws SlickException
 	{
@@ -45,9 +47,10 @@ public class Tile {
 	}
 	public void render(GameContainer gc, Graphics g)
 	{
-		if(loaded) 
+		if(loaded)
 		{
-			tileImage.draw(position.x-isp.getGame().cam.camPosX(),position.y-isp.getGame().cam.camPosY());
+			//tileImage.draw(position.x-isp.getGame().cam.camPosX(),position.y-isp.getGame().cam.camPosY());
+			isp.getGame().terrain.returnImage(type).draw(position.x-isp.getGame().cam.camPosX(),position.y-isp.getGame().cam.camPosY());
 		}
 	}
 	public int returnStrength()
@@ -56,6 +59,7 @@ public class Tile {
 	}
 	public void update(GameContainer gc)
 	{
+
 		if(position.x > isp.getGame().cam.camPosX() - 64 && position.x < isp.getGame().cam.camPosX() + isp.getGame().getWidth() + 64 && 
 		position.y > isp.getGame().cam.camPosY() - 64 && position.y < isp.getGame().cam.camPosY() + isp.getGame().getHeight() + 64)
 		{

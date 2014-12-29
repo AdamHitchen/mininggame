@@ -9,12 +9,10 @@ import something.ItemSpawner;
 import something.Game;
 
 public class t_iron extends Tile{
-	public String image = "res/tiles/t_iron.png";	
 	public t_iron(float f, float g, int row, ItemSpawner isp) throws SlickException {
 		super(f, g, row, isp);
-
 		type = 4;
-		tileImage = new Image(image);
+		//tileImage = new Image(image);
 		tileStrength = 7;
 	}
 	
