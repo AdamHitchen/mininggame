@@ -30,7 +30,7 @@ $RECYCLE.BIN/
 
 # Thumbnails
 ._*
-
+noiseasd.png
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
@@ -39,5 +39,6 @@ $RECYCLE.BIN/
 .AppleDB
 .AppleDesktop
 Network Trash Folder
+maps
 Temporary Items
 .apdisk

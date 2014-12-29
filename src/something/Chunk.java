@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import tiles.*;
@@ -128,7 +129,7 @@ public class Chunk
 			
 		}
 		timePassed+=1*arg1;
-		if(timePassed > 20000)
+		if(gc.getInput().isKeyPressed(Input.KEY_ESCAPE) && timePassed > 10000)
 		{
 			saveTiles();
 			System.out.println("Chunk" + chunkID + " is trying to save");

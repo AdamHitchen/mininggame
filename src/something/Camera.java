@@ -18,8 +18,8 @@ public class Camera {
 	{
 		game = mGame;
 		 camPos = new Vector2f(0,0);
-		 offsetMaxX = game.maxX * game.tileSize - width;
-		 offsetMaxY = game.getMaxY()* game.tileSize- height;
+		
+		
 	}
 	public float camPosX()
 	{
@@ -28,6 +28,14 @@ public class Camera {
 	public float camPosY()
 	{
 		return camPos.y;
+	}
+	public void setMaxX()
+	{
+		 offsetMaxX = game.maxX * game.tileSize - width;
+	}
+	public void setMaxY()
+	{
+		 offsetMaxY = game.getMaxY()* game.tileSize- height;
 	}
 	
 	public void update()

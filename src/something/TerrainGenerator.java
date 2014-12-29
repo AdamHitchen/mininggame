@@ -2,14 +2,19 @@ package something;
 
 import java.awt.Desktop;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -24,7 +29,7 @@ import tiles.*;
 
 public class TerrainGenerator {
 	Game game;
-	private int maxX, maxY;
+	private int maxX = 1080, maxY = 1080;
 	private int[][] worldArray;
 	private int[] worldRow;
 	private int worldRows;
@@ -40,6 +45,7 @@ public class TerrainGenerator {
 	Music sound1;
 	int loadedChunks;
 	private int numChunks;
+	Camera cam;
 	private int chunkSize = 40;
 	private int chunksToLoad = 5;
 	String filename;
@@ -49,18 +55,17 @@ public class TerrainGenerator {
 	Image tempImage;
 	Image[] allImages;
 	int tileSize;
-	public TerrainGenerator(Game gm, Inventory inv, ItemSpawner iisp, int maxX, int maxY, int tileSize) throws SlickException, IOException
+	public TerrainGenerator(Game gm, Inventory inv, ItemSpawner iisp, int tileSize, Camera cam) throws SlickException, IOException
 	{
 		chunk = new Chunk[chunksToLoad];
 		this.tileSize = tileSize;
-		sound1 = new Music("res/sounds/mega goat.wav");
-		this.maxX = maxX;
+		sound1 = new Music("res/sounds/mega goat.wav");		
 		game = gm;
 		chunks = new ArrayList();
 		world = new ArrayList();
 		isp = iisp;
-		this.maxY = maxY;
 		worldArray = new int[maxX][maxY];
+		this.cam = cam;
 		noiseTest = new int[maxX][maxY];
 		worldRow = new int[maxX];
 		tileTypes = new ArrayList<Integer>();
@@ -79,6 +84,26 @@ public class TerrainGenerator {
 		allImages[4] = new Image("res/tiles/t_silver.png");
 		allImages[5] = new Image("res/tiles/t_Wood.png");
 		allImages[8] = new Image("res/tiles/t_Workbench.png");
+		
+			File Dimensions = new File(currentDirectory+"/maps/"+mapName+"/dimensions.dat");
+			if(Files.exists(Paths.get(currentDirectory + "/maps/"+mapName)))
+			{
+				BufferedReader br = new BufferedReader(new FileReader(Dimensions));
+				String sr = br.readLine();
+				String sr2 = br.readLine();
+				System.out.println(sr + " "+ sr2);
+				if(sr != null && sr2 != null)
+				{
+				
+					maxX = Integer.parseInt(sr);
+					maxY = Integer.parseInt(sr2);
+					
+				}
+				br.close();
+			}
+	
+			System.out.println(maxX + ", " + maxY);
+		
 		if(maxX%chunkSize != 0) //Determine the number of chunks
 		{
 			numChunks = (maxX - maxX%chunkSize) / chunkSize + 1; 
@@ -101,6 +126,12 @@ public class TerrainGenerator {
 		{
 			File f = new File(currentDirectory+"/maps/" + mapName + "/");
 			f.mkdir();
+			FileWriter filestream = new FileWriter(Dimensions, false);
+			BufferedWriter fw = new BufferedWriter(filestream);
+			fw.write(maxX + "\n");
+			fw.write(maxY + "\n");
+			fw.flush();
+			fw.close();
 			System.out.println("map created!");
 			generateWorld();
 			initializeChunks();
@@ -109,13 +140,17 @@ public class TerrainGenerator {
 
 		
 	}
+	public void setCam(Camera cam)
+	{
+		this.cam = cam;
+	}
 	public void initializeChunks() throws FileNotFoundException, SlickException, IOException
 	{
-		if(((game.cam.camPosX() - game.cam.camPosX() % chunkSize) / chunkSize) - 1 >= 0)
+		if(((cam.camPosX() - cam.camPosX() % chunkSize) / chunkSize) - 1 >= 0)
 		{
 			for(int i = 0; i < chunksToLoad; i++)
 			{
-				Chunk chunks = new Chunk((int) ((game.cam.camPosX() - game.cam.camPosX() % chunkSize) / chunkSize) - 1,this,isp,filename, false);
+				Chunk chunks = new Chunk((int) ((cam.camPosX() - cam.camPosX() % chunkSize) / chunkSize) - 1,this,isp,filename, false);
 				chunk[i] = chunks;
 			}
 		}
@@ -128,7 +163,10 @@ public class TerrainGenerator {
 			}
 		}
 	}
-	
+	public int returnMaxX()
+	{
+		return maxX;
+	}
 	public int returnChunksToLoad()
 	{
 		return chunksToLoad;
@@ -140,17 +178,17 @@ public class TerrainGenerator {
 	public void setLoadedChunks() throws FileNotFoundException, SlickException, IOException
 	{
 		int lastLoadedChunks = loadedChunks;
-	/*	if(game.cam.camPosX() < 1*chunkSize*tileSize)
+	/*	if(cam.camPosX() < 1*chunkSize*tileSize)
 		{
 			loadedChunks = 0;
 		}
-		else if(game.cam.camPosX() > (numChunks-1) * chunkSize * tileSize)
+		else if(cam.camPosX() > (numChunks-1) * chunkSize * tileSize)
 		{
 			loadedChunks = numChunks - chunksToLoad;
 		}
 		else wd*/
 		
-			loadedChunks = (int)((game.cam.camPosX() - game.cam.camPosX() % (chunkSize * tileSize)) / (chunkSize * tileSize)-2);
+			loadedChunks = (int)((cam.camPosX() - cam.camPosX() % (chunkSize * tileSize)) / (chunkSize * tileSize)-2);
 			//< chunk[1].returnID() * chunkSize * tileSize;
 			
 		if(loadedChunks < 0)
@@ -231,7 +269,7 @@ public class TerrainGenerator {
 	
 	public void render(GameContainer gc,Graphics g)
 	{
-		//tempImage.draw(256 - game.cam.camPosX(),maxY * game.tileSize - worldRow[8]*game.tileSize - game.cam.camPosY());
+		//tempImage.draw(256 - cam.camPosX(),maxY * game.tileSize - worldRow[8]*game.tileSize - cam.camPosY());
 		for(int i = 0; i < chunksToLoad; i++)
 		{
 			chunk[i].render(gc, g);
@@ -253,7 +291,8 @@ public class TerrainGenerator {
 		System.out.println(game.getWidth() + " width");
 		worldRow[0] = game.randomInt(maxY-40,maxY - 10);
 		
-		generate = 12.678106215752825;
+		//generate = 12.678106215752825;
+		generate = 9.678106215752825;
 		System.out.print(generate);
 		System.out.println("");
 		filename = Double.toString(generate);
@@ -291,7 +330,6 @@ public class TerrainGenerator {
 	    {
 	    	for(int y = 0; y < maxY; y ++)
 	    	{
-
 	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5))
 	    		{
 	    			worldArray[i][y] = 0;

@@ -37,7 +37,7 @@ public class t_dirt extends Tile{
 				int xloc =  (int) (position.x - position.x) % 32;
 				int yloc =  (int) (position.y - position.y) % 32;
 				int x = (int) xloc / 32;
-				int y = (int) (((isp.getGame().maxX*32) - yloc) / 32);
+				int y = (int) (((isp.getGame().terrain.returnMaxX()*32) - yloc) / 32);
 				isp.getGame().terrain.replaceTile(this, 2, x, y);
 			}
 		}

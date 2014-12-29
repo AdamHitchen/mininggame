@@ -47,8 +47,8 @@ public class Game extends BasicGame {
 	ItemSpawner isp; 
 	public Random random;
 	public TerrainGenerator terrain;
-	public int maxX = 800;
-	int maxY = 2000;
+	public int maxX = 0;
+	int maxY = 0;
 	Crafting craft;
 	public Camera cam;
 	private int width = 1280, height = 720;
@@ -147,11 +147,17 @@ public class Game extends BasicGame {
 		cam = new Camera(this);
 		inv = new Inventory(this, cam);
 		try {
-			terrain = new TerrainGenerator(this, inv, isp, maxX, maxY, tileSize);
+			terrain = new TerrainGenerator(this, inv, isp, tileSize, cam);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	
+		maxX = terrain.returnMaxX();
+		maxY = terrain.returnMaxY();
+		cam.setMaxX();
+		cam.setMaxY();
+		
 		craft = new Crafting(this, inv);
 		rect = new Rectangle(20,20,30,30);
 		//gc.setTargetFrameRate(60);
