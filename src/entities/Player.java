@@ -11,6 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import something.Chunk;
 import something.Game;
+import something.TerrainGenerator;
 import tiles.Tile;
 
 public class Player {
@@ -29,10 +30,11 @@ public class Player {
 	private boolean movingUp, movingDown, movingLeft, movingRight;
 	private boolean facingLeft;
 	Animation anim;
+	TerrainGenerator terrain;
 	int animtim;
 	SpriteSheet sprites;
 	Image[] frames;
-	public Player(float x, float y, Game gameWorld) throws SlickException 
+	public Player(float x, float y, Game gameWorld, TerrainGenerator terrain) throws SlickException 
 	{
 		game = gameWorld;
 		this.position = new Vector2f(x,y);
@@ -41,6 +43,7 @@ public class Player {
 		width = playerImage.getWidth();
 		height = playerImage.getHeight() - 2;
 		speed = 0.3f;
+		this.terrain = terrain;
 	/*	frames = new Image[9];
 		frames[0] = new Image("");
 		frames[1] = new Image("");
@@ -153,73 +156,78 @@ public class Player {
 		
 			for(int c = toIterateFrom; c < toIterateTo; c++)
 			{
-				for(int i = 0; i < chunk[c].getTiles().size() ; i++)
+				Tile[][] tiles = chunk[c].getTiles();
+				for(int i = 0; i <= terrain.returnChunkSize()-1 ; i++)
 				{
-					
-					Tile tile = (Tile) chunk[c].getTiles().get(i);
-					if(game.calcDistance(position.x, position.y, tile.getPos().x, tile.getPos().y) < 160)
+					for(int y = 0; y <= terrain.returnMaxY()-1; y++)
 					{
-					/*	if((nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + 32 && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y+ 32)
-								|| (nextXpos + 28>= tile.getPos().x  && nextXpos + 28 <= tile.getPos().x + 32 && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y + 32)
-								||	(nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + 32 && nextYpos+32 >= tile.getPos().y && nextYpos+32 <= tile.getPos().y +32)
-								|| (nextXpos + 28>= tile.getPos().x  && nextXpos + 28 <= tile.getPos().x + 32 && nextYpos+32 >= tile.getPos().y && nextYpos+32 <= tile.getPos().y + 32) )
+						Tile tile = tiles[i][y];
+				
+						if(tile != null && game.calcDistance(position.x, position.y, tile.getPos().x, tile.getPos().y) < 160)//Check if the object is within 160 pixels of the player for efficiency. expensive operation. would like to remove.
 						{
-							canMoveY = false;
-							canMoveX = false;
-							Player playa = (Player) game.players.get(0);
-							velocity.x = 0;
-							velocity.y = 0;
-						}*/
-					
-						//check to see if the next position would land the player inside of an object
-						if((		nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + tile.returnWidth() && position.y >= tile.getPos().y && position.y <= tile.getPos().y+ tile.returnHeight())
-								|| (nextXpos + width>= tile.getPos().x  && nextXpos + width <= tile.getPos().x + tile.returnWidth() && position.y >= tile.getPos().y && position.y <= tile.getPos().y + tile.returnHeight())
-								||	(nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + tile.returnWidth() && position.y+height >= tile.getPos().y && position.y+height <= tile.getPos().y +tile.returnHeight())
-								|| (nextXpos + width>= tile.getPos().x  && nextXpos + width <= tile.getPos().x + tile.returnHeight() && position.y+height >= tile.getPos().y && position.y+height <= tile.getPos().y + tile.returnHeight())
-								|| (tile.getPos().x >= nextXpos && tile.getPos().x <= nextXpos + width && tile.getPos().y >= position.y && tile.getPos().y <= position.y + height)
-								|| (tile.getPos().x + tile.returnWidth() >= nextXpos && tile.getPos().x + tile.returnWidth() <= nextXpos + width && tile.getPos().y >= position.y && tile.getPos().y <= position.y + height)
-								|| (tile.getPos().x >= nextXpos && tile.getPos().x <= nextXpos + width && tile.getPos().y + tile.returnWidth() >= position.y && tile.getPos().y + tile.returnWidth() <= position.y + height)
-								|| (tile.getPos().x + tile.returnWidth() >= nextXpos && tile.getPos().x + tile.returnWidth() <= nextXpos + width && tile.getPos().y + tile.returnWidth() >= position.y && tile.getPos().y + tile.returnWidth() <= position.y + height))
-						{
-							canMoveX = false;
-							if(velocity.x > 0) //if the next position would land the player inside of an object, move the player to the closest possible position
+						/*	if((nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + 32 && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y+ 32)
+									|| (nextXpos + 28>= tile.getPos().x  && nextXpos + 28 <= tile.getPos().x + 32 && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y + 32)
+									||	(nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + 32 && nextYpos+32 >= tile.getPos().y && nextYpos+32 <= tile.getPos().y +32)
+									|| (nextXpos + 28>= tile.getPos().x  && nextXpos + 28 <= tile.getPos().x + 32 && nextYpos+32 >= tile.getPos().y && nextYpos+32 <= tile.getPos().y + 32) )
 							{
-								position.x += tile.getPos().x - (position.x + width)- 0.05f; 
-							}
-							else if(velocity.x < 0)
-							{
-								position.x += tile.getPos().x + tile.tileImage().getWidth() - (position.x) + 0.05f;
-							}
-							velocity.x = 0;
-						}
-					
-						if((position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.returnWidth() && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y+ tile.returnHeight())
-								|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.returnWidth() && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y + tile.returnHeight())
-								||	(position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.returnWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y +tile.returnHeight())
-								|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.returnWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.returnHeight()) )
-						{
-							canMoveY = false;
-							jumping = false;
-							falling = false;
-							if(velocity.y > 0)
-							{
-								position.y += tile.getPos().y - (position.y + height) - 0.05f;
-							}
-							/*else if(velocity.y < 0)
-							{
-								position.y += (tile.getPos().x + 32) - (position.x) + 0.0001f;  
+								canMoveY = false;
+								canMoveX = false;
+								Player playa = (Player) game.players.get(0);
+								velocity.x = 0;
+								velocity.y = 0;
 							}*/
-							velocity.y = 0;
-						}
-						if((position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.tileImage().getWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.tileImage().getHeight())
-						|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.tileImage().getWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.tileImage().getHeight()))
 						
-						{
-							initJ = true;
+							//check to see if the next position would land the player inside of an object
+							if((		nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + tile.returnWidth() && position.y >= tile.getPos().y && position.y <= tile.getPos().y+ tile.returnHeight())
+									|| (nextXpos + width>= tile.getPos().x  && nextXpos + width <= tile.getPos().x + tile.returnWidth() && position.y >= tile.getPos().y && position.y <= tile.getPos().y + tile.returnHeight())
+									||	(nextXpos >= tile.getPos().x && nextXpos <= tile.getPos().x + tile.returnWidth() && position.y+height >= tile.getPos().y && position.y+height <= tile.getPos().y +tile.returnHeight())
+									|| (nextXpos + width>= tile.getPos().x  && nextXpos + width <= tile.getPos().x + tile.returnHeight() && position.y+height >= tile.getPos().y && position.y+height <= tile.getPos().y + tile.returnHeight())
+									|| (tile.getPos().x >= nextXpos && tile.getPos().x <= nextXpos + width && tile.getPos().y >= position.y && tile.getPos().y <= position.y + height)
+									|| (tile.getPos().x + tile.returnWidth() >= nextXpos && tile.getPos().x + tile.returnWidth() <= nextXpos + width && tile.getPos().y >= position.y && tile.getPos().y <= position.y + height)
+									|| (tile.getPos().x >= nextXpos && tile.getPos().x <= nextXpos + width && tile.getPos().y + tile.returnWidth() >= position.y && tile.getPos().y + tile.returnWidth() <= position.y + height)
+									|| (tile.getPos().x + tile.returnWidth() >= nextXpos && tile.getPos().x + tile.returnWidth() <= nextXpos + width && tile.getPos().y + tile.returnWidth() >= position.y && tile.getPos().y + tile.returnWidth() <= position.y + height))
+							{
+								canMoveX = false;
+								if(velocity.x > 0) //if the next position would land the player inside of an object, move the player to the closest possible position
+								{
+									position.x += tile.getPos().x - (position.x + width)- 0.05f; 
+								}
+								else if(velocity.x < 0)
+								{
+									position.x += tile.getPos().x + tile.tileImage().getWidth() - (position.x) + 0.05f;
+								}
+								velocity.x = 0;
+							}
+						
+							if((position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.returnWidth() && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y+ tile.returnHeight())
+									|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.returnWidth() && nextYpos >= tile.getPos().y && nextYpos <= tile.getPos().y + tile.returnHeight())
+									||	(position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.returnWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y +tile.returnHeight())
+									|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.returnWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.returnHeight()) )
+							{
+								canMoveY = false;
+								jumping = false;
+								falling = false;
+								if(velocity.y > 0)
+								{
+									position.y += tile.getPos().y - (position.y + height) - 0.05f;
+								}
+								/*else if(velocity.y < 0)
+								{
+									position.y += (tile.getPos().x + 32) - (position.x) + 0.0001f;  
+								}*/
+								velocity.y = 0;
+							}
+							if((position.x >= tile.getPos().x && position.x <= tile.getPos().x + tile.tileImage().getWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.tileImage().getHeight())
+							|| (position.x + width>= tile.getPos().x  && position.x + width <= tile.getPos().x + tile.tileImage().getWidth() && nextYpos+height >= tile.getPos().y && nextYpos+height <= tile.getPos().y + tile.tileImage().getHeight()))
+							
+							{
+								initJ = true;
+							}
 						}
 					}
 				}
 			}
+
 		if(canMoveX)
 		{
 			position.x = nextXpos;
@@ -336,4 +344,48 @@ public class Player {
 	public void setDead(boolean d) {
 		dead = d;
 	}
+	
+	
+/*    public boolean LinesIntersect(float x1, float y1, Tile tile)
+    {
+        Vector2f A, B, C, D;
+        
+        A = new Vector2f(position.x,position.y);
+        B = new Vector2f(x1,y1);
+		Vector2f r = new Vector2f(B.x - A.x, B.y - A.y);
+
+        C = new Vector2f(tile.getPos().x,tile.getPos().y);
+        D = new Vector2f(tile.getPos().x+tile.returnWidth, tile.getPos().y);
+        return LinesIntersect(A, B, C, D, r);
+        
+    }
+ 
+    // Determines if the lines AB and CD intersect.
+	static boolean LinesIntersect(Vector2f A, Vector2f B, Vector2f C, Vector2f D, Vector2f r)
+	{
+		Vector2f CmP = new Vector2f(C.x - A.x, C.y - A.y);
+		Vector2f s = new Vector2f(D.x - C.x, D.y - C.y);
+ 
+		float CmPxr = CmP.x * r.y - CmP.y * r.x;
+		float CmPxs = CmP.x * s.y - CmP.y * s.x;
+		float rxs = r.x * s.y - r.y * s.x;
+ 
+		if (CmPxr == 0f)
+		{
+			// Lines are collinear, and so intersect if they have any overlap
+ 
+			return ((C.x - A.x < 0f) != (C.x - B.x < 0f))
+				|| ((C.x - A.x < 0f) != (C.x - B.x < 0f));
+		}
+ 
+		if (rxs == 0f)
+			return false; // Lines are parallel.
+ 
+		float rxsr = 1f / rxs;
+		float t = CmPxs * rxsr;
+		float u = CmPxr * rxsr;
+ 
+		return (t >= 0f) && (t <= 1f) && (u >= 0f) && (u <= 1f);
+	}*/
 }
+

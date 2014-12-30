@@ -209,6 +209,7 @@ public class TerrainGenerator {
 		else if(loadedChunks > lastLoadedChunks) 
 		{
 			System.out.println("This code has run");
+			chunk[0].saveTiles();
 			chunk[0] = null;
 			for(int i = 0; i <= chunksToLoad; i++)
 			{
@@ -229,7 +230,7 @@ public class TerrainGenerator {
 			chunk[3] = chunk[2];
 			chunk[2] = chunk[1];
 			chunk[1] = chunk[0];*/
-			
+			chunk[4].saveTiles();
 			for(int i = chunksToLoad-1; i > 0; i--)
 			{
 				if(i - 1 >= 0)
@@ -330,8 +331,8 @@ public class TerrainGenerator {
 	    {
 	    	for(int y = 0; y < maxY; y ++)
 	    	{
-	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5))
-	    		{
+	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5 || noiseTest[i][y] == 10))
+	    		{//values to set to blank space ^^^^^^^^^^^^^^^^^^^^^^
 	    			worldArray[i][y] = 0;
 	    			//generate chests//
 	    			if(i > 0 && y > 0)if(worldArray[i][y-1] == 3)
@@ -344,7 +345,8 @@ public class TerrainGenerator {
 	    				 }
 	    			}
 	    		}
-	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 || noiseTest[i][y] == 9 || noiseTest[i][y]==10|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2 ||noiseTest[i][y] == 3|| noiseTest[i][y] == 4))
+	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 || noiseTest[i][y] == 9 || noiseTest[i][y]==10
+	    				|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2 ||noiseTest[i][y] == 3|| noiseTest[i][y] == 4 ||  noiseTest[i][y] == -5 ||noiseTest[i][y] == -6 || noiseTest[i][y] == -7 ))
 	    		{
 
 	    			worldArray[i][y] = 3;
@@ -518,9 +520,10 @@ public class TerrainGenerator {
 	{
 		world.add(tile);
 	}
-	public void removeTile(int i, Chunk chun)
+	public void removeTile(int x, int y, Chunk chun)
 	{
-		chun.getTiles().remove(i);
+		chun.removeTile(x,y);
+		
 	}
 	public void removeTile(Tile t)
 	{

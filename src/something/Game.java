@@ -161,7 +161,7 @@ public class Game extends BasicGame {
 		craft = new Crafting(this, inv);
 		rect = new Rectangle(20,20,30,30);
 		//gc.setTargetFrameRate(60);
-		Player player = new Player(100,0,this);
+		Player player = new Player(100,0,this,terrain);
 		players.add(player);
 		activeTool = 1;
 
@@ -312,6 +312,9 @@ public class Game extends BasicGame {
 				int chunkSize = terrain.returnChunkSize();
 				int tileSize = terrain.returnTileSize();
 				int tempInt = (int)((gc.getInput().getAbsoluteMouseX() + cam.camPosX() - ((gc.getInput().getAbsoluteMouseX() + cam.camPosX()) % (chunkSize * tileSize))) / (chunkSize * tileSize));
+				
+				int relativeX =(int)(gc.getInput().getAbsoluteMouseX() + (cam.camPosX() - cam.camPosX() % tileSize) - tempInt * tileSize * chunkSize)/tileSize;
+				int yloc1 =  (int) (maxY - ((gc.getInput().getAbsoluteMouseY()+ cam.camPosY()) - (gc.getInput().getAbsoluteMouseY() + cam.camPosY()) % tileSize) / tileSize);
 				System.out.println("tempInt  = " + tempInt);
 				for(int i = 0; i < terrain.returnChunks().length; i++)
 				{
@@ -321,42 +324,49 @@ public class Game extends BasicGame {
 					}
 				}
 				System.out.println("currentChunk = " + currentChunk);
-				for(int i = 0; i < chunk[currentChunk].getTiles().size(); i++)
+				Tile[][] tiles = chunk[currentChunk].getTiles();
+				
+				/*for(int i = 0; i < chunk[currentChunk].getTiles().size(); i++)
 				{
+				
 					Tile tile = (Tile) chunk[currentChunk].getTiles().get(i);
 					
 					if(gc.getInput().getAbsoluteMouseX() + cam.camPosX() > tile.getPos().x && gc.getInput().getAbsoluteMouseX() + cam.camPosX()< tile.getPos().x + tile.returnWidth()
 							&& gc.getInput().getAbsoluteMouseY()+ cam.camPosY() > tile.getPos().y && gc.getInput().getAbsoluteMouseY() + cam.camPosY()< tile.getPos().y + tile.returnHeight())
-					{
+					{//No longer needed, location is already detected now*/
 						ArrayList<Integer> miningTools = (ArrayList<Integer>) inv.returnMiningTools();
 						ArrayList<Integer> miningStrength = (ArrayList<Integer>) inv.returnMiningStrength();
 						for(int z = 0; z < miningTools.size() && z < miningStrength.size(); z ++)
 						{
-							if(miningTools.get(z) == activeID && miningStrength.get(z) >= tile.returnStrength())
+							System.out.println("Chunk: " + currentChunk + " " + relativeX + ", " + yloc1);
+
+							if( tiles[relativeX][yloc1] != null && miningTools.get(z) == activeID && miningStrength.get(z) >= tiles[relativeX][yloc1].returnStrength())
 							{
 								canMine = true;
+								System.out.println("CanMine = true");
 							}
 						}
 						if(canMine)
 						{
-							float triX = player.getPosition().x - tile.getPos().x;
-							float triY = player.getPosition().x - tile.getPos().y;
+							float triX = player.getPosition().x - tiles[relativeX][yloc1].getPos().x;
+							float triY = player.getPosition().x - tiles[relativeX][yloc1].getPos().y;
 							float xloc =  (gc.getInput().getAbsoluteMouseX() + cam.camPosX()) - ((gc.getInput().getAbsoluteMouseX()+ cam.camPosX()) % tileSize);
 							float yloc =  (gc.getInput().getAbsoluteMouseY()+ cam.camPosY()) - (gc.getInput().getAbsoluteMouseY() + cam.camPosY()) % tileSize;
 							int x = (int) xloc / tileSize;
 							int y = (int) (((maxY*tileSize) - yloc) / tileSize);
-							if(calcDistance(player.getPosition().x + player.playerImage.getWidth()/2,player.getPosition().y + player.playerImage.getHeight()/2,tile.getPos().x,tile.getPos().y) < tileSize*8)
+							if(calcDistance(player.getPosition().x + player.playerImage.getWidth()/2,player.getPosition().y + player.playerImage.getHeight()/2,tiles[relativeX][yloc1].getPos().x,tiles[relativeX][yloc1].getPos().y) < tileSize*8)
 							{
-								tile.drop();
-								tile = null;
-								terrain.removeTile(i, chunk[currentChunk]);
+							
+								tiles[relativeX][yloc1].drop();
+								tiles[relativeX][yloc1] = null;
+								terrain.removeTile(relativeX, yloc1, chunk[currentChunk]);
 								System.out.println("trying to remove chunk");
 								terrain.setWorldArray(x, y, 0,chunk[currentChunk], false,xloc,yloc);
 								System.out.println("Trying to update array");
 							}
 						}
-					}
-				}
+					
+				
 			}
 			else if(terrain.returnTileTypes().contains(activeID) && !craft.returnUI())
 			{

@@ -14,7 +14,7 @@ public class ChunkSaver implements Runnable{
 		// TODO Auto-generated method stub
 		try {
 			saveTiles();
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -27,7 +27,7 @@ public class ChunkSaver implements Runnable{
 		this.chunk = chunk;
 		this.file = file;
 	}
-	private void saveTiles() throws IOException
+	private void saveTiles() throws IOException, InterruptedException
 	{
 		FileWriter filestream = new FileWriter(file, false);
 		BufferedWriter fw = new BufferedWriter(filestream);
@@ -39,7 +39,7 @@ public class ChunkSaver implements Runnable{
 				fw.write(tileArray[i][y] + "\n");
 				
 			}
-
+			
 		}
 		System.out.println(file+" Has been saved");
 		fw.flush();
