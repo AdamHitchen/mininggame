@@ -94,21 +94,23 @@ public class Player {
 	}
 	public float nextGravityPos(int arg1)
 	{
-		
-		float newPosY;
-		if(falling && tempGravityBoost < maxDownwardsVelocity)
+		if(arg1<50)
 		{
-			tempGravityBoost += 0.01f * arg1;
+			float newPosY;
+			if(falling && tempGravityBoost < maxDownwardsVelocity)
+			{
+				tempGravityBoost += 0.01f * arg1;
+			}
+			else if (!falling)
+			{
+				falling = true;
+				tempGravityBoost = 0;
+			}
+			newPosY = (gravity * arg1 + tempGravityBoost);
+			return newPosY;
 		}
-		else if (!falling)
-		{
-			falling = true;
-			tempGravityBoost = 0;
-		}
-		
-		
-		newPosY = (gravity * arg1 + tempGravityBoost);
-		return newPosY;
+		else
+			return 0; 
 	}
 	public void setNextPos()
 	{
@@ -259,7 +261,8 @@ public class Player {
 		movingRight = gc.getInput().isKeyDown(Input.KEY_D);
 		movingLeft = gc.getInput().isKeyDown(Input.KEY_A);
 		movingDown = gc.getInput().isKeyDown(Input.KEY_S);
-		
+		if(arg0 < 50)
+		{
 		if(movingUp)
 		{
 			if(initJ)
@@ -274,32 +277,33 @@ public class Player {
 			initJ = false;
 			
 		}
-		if(jumping)
-		{
-			
-			velocity.y += jumpVelocity * arg0;
-			jumpVelocity +=0.002f * arg0;
-			if(jumpVelocity >= 0)
-			{
-				jumping = false;
-			}
-		}
-		if(movingLeft)
-		{
-			velocity.x -= speed*arg0;
-			facingLeft = true;
-		}
-		if(movingRight)
-		{
-			velocity.x+=speed*arg0;
-			facingLeft = false;
-		}		
-		
-		if(position.y > 2000)
-		{
-			position.y = 0;
-		}
 
+			if(jumping)
+			{
+				
+				velocity.y += jumpVelocity * arg0;
+				jumpVelocity +=0.002f * arg0;
+				if(jumpVelocity >= 0)
+				{
+					jumping = false;
+				}
+			}
+			if(movingLeft)
+			{
+				velocity.x -= speed*arg0;
+				facingLeft = true;
+			}
+			if(movingRight)
+			{
+				velocity.x+=speed*arg0;
+				facingLeft = false;
+			}		
+			
+			/*if(position.y > maxY*16)
+			{
+				position.y = 0;
+			}*/
+		}
 		setNextPos();
 		//position.x+= velocity.x;
 		//position.y+= velocity.y;

@@ -154,8 +154,6 @@ public class Chunk
 
 	public void createTile(int tileX, int tileY, int tileType, int row, int x) throws SlickException
 	{
-		System.out.println("TileX: " + tileX + " tileY: " + tileY + " Row: " + row + "x: " + x);
-
 			if(tileType == 1)
 			{
 				t_dirt tile = new t_dirt(tileX, tileY, row, isp);

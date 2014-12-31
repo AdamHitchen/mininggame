@@ -75,8 +75,9 @@ public class ChunkLoader implements Runnable{
 					    String line = br.readLine(); 
 					   //System.out.println(line);
 					    if(line!=null)tempTiles[i][y] = Integer.parseInt(line);  
-					    Thread.yield();
+					    
 				}
+				Thread.yield();
 			}
 		}
 		return tempTiles;

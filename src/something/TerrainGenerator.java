@@ -47,6 +47,7 @@ public class TerrainGenerator {
 	private int numChunks;
 	Camera cam;
 	private int chunkSize = 40;
+	private int baseHeight;
 	private int chunksToLoad = 5;
 	String filename;
 	private static String currentDirectory = new File("").getAbsolutePath();
@@ -289,21 +290,18 @@ public class TerrainGenerator {
 	}
 	private void generateWorld() throws IOException, SlickException
 	{
-		System.out.println(game.getWidth() + " width");
-		worldRow[0] = game.randomInt(maxY-40,maxY - 10);
-		
-		//generate = 12.678106215752825;
+		//baseHeight = game.randomInt(maxY-100,maxY - 60);
+		baseHeight = (int)Math.round(maxY * 0.9);
+		//generateHeight(generate);
 		generate = 9.678106215752825;
-		System.out.print(generate);
-		System.out.println("");
 		filename = Double.toString(generate);
 		System.out.println("Filename = "+filename);
 		generateNoise(maxX, maxY, 5 + generate);
 	
-		for(int i = 0; i < maxX; i++) //Generate surface height
+	for(int i = 0; i < maxX; i++) //Generate surface height
 		{
-			if(i > 0)
-			{
+			if(i >= 0)
+			/*{
 				worldRow[i] = worldRow[i-1] + game.randomInt(-1,1);
 				if(worldRow[i] < 1)
 				{
@@ -313,7 +311,7 @@ public class TerrainGenerator {
 				{
 					worldRow[i] = maxY - 1;
 				}
-			}
+			}*/
 			for(int y = 0; y < worldRow[i]; y++)
 			{
 				if(y < worldRow[i] -1)
@@ -331,7 +329,7 @@ public class TerrainGenerator {
 	    {
 	    	for(int y = 0; y < maxY; y ++)
 	    	{
-	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5 || noiseTest[i][y] == 10))
+	    		if(y < worldRow[i] - 4 && ( noiseTest[i][y] == 3|| noiseTest[i][y] == 5 ||noiseTest[i][y] == 6 || noiseTest[i][y] == 7 || noiseTest[i][y] == 8 || noiseTest[i][y] == 4 || noiseTest[i][y] == 5 || noiseTest[i][y] == 10))
 	    		{//values to set to blank space ^^^^^^^^^^^^^^^^^^^^^^
 	    			worldArray[i][y] = 0;
 	    			//generate chests//
@@ -345,8 +343,8 @@ public class TerrainGenerator {
 	    				 }
 	    			}
 	    		}
-	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 || noiseTest[i][y] == 9 || noiseTest[i][y]==10
-	    				|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2 ||noiseTest[i][y] == 3|| noiseTest[i][y] == 4 ||  noiseTest[i][y] == -5 ||noiseTest[i][y] == -6 || noiseTest[i][y] == -7 ))
+	    		else if(y < worldRow[i] - 4 && (noiseTest[i][y] == 1 || noiseTest[i][y] == 8 
+	    				|| noiseTest[i][y] == 5 || noiseTest[i][y] == 6 || noiseTest[i][y] == 2 ||noiseTest[i][y] == 3|| noiseTest[i][y] == 4 ||  noiseTest[i][y] == -1 || noiseTest[i][y] == 0))
 	    		{
 
 	    			worldArray[i][y] = 3;
@@ -476,6 +474,8 @@ public class TerrainGenerator {
 				//	if(value < 0)
 				//	{
 						noiseTest[x][y] = (int) Math.round(value*10);
+				worldRow[x] = (int)(baseHeight + Math.round(value*10));
+
 				/*	}
 					else if (value > 0 && value < 10)
 					{
@@ -490,6 +490,20 @@ public class TerrainGenerator {
 		}
 		ImageIO.write(image, "png", new File("noiseasd.png"));
 
+	}
+	public void generateHeight(double FEATURE_SIZE) throws IOException
+	{
+		OpenSimplexNoise noise = new OpenSimplexNoise();
+		for (int x = 0; x < maxX-1; x++)
+		{
+			for(int y = 0; y < maxX - 1; x ++)
+			{
+				double value = noise.eval(x / FEATURE_SIZE, y / FEATURE_SIZE);//, 0.0);
+				if(x<maxX)
+
+				System.out.print(value*1000);
+			}
+		}
 	}
 	public Image returnImage(int i)
 	{

@@ -39,7 +39,6 @@ public class ChunkSaver implements Runnable{
 				fw.write(tileArray[i][y] + "\n");
 				
 			}
-			
 		}
 		System.out.println(file+" Has been saved");
 		fw.flush();

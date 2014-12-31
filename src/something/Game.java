@@ -160,7 +160,7 @@ public class Game extends BasicGame {
 		
 		craft = new Crafting(this, inv);
 		rect = new Rectangle(20,20,30,30);
-		//gc.setTargetFrameRate(60);
+		gc.setTargetFrameRate(60);
 		Player player = new Player(100,0,this,terrain);
 		players.add(player);
 		activeTool = 1;
@@ -195,29 +195,6 @@ public class Game extends BasicGame {
 	@Override
 	public void update(GameContainer gc, int arg1) throws SlickException 
 	{	
-/*		if(cam.camPosX() + width > worldRows * 32)
-		{
-			newX = worldRows * 32;
-			worldRow[worldRows] = worldRow[worldRows - 1] + randomInt(-1,1);
-			if(worldRow[worldRows] <= 0)
-			{
-				worldRow[worldRows] = 0;
-			}
-			else if(worldRow[worldRows] >= 18)
-			{
-				worldRow[worldRows] = 18;
-			}
-
-			for(int h = 1; h < worldRow[worldRows]; h++)
-			{
-				createTile(newX,height - 32 * h, randomInt(0,1), h, worldRows);
-				
-			}
-			worldRows ++;
-			
-		}*///
-		
-
 		isp.update(gc, arg1);
 		try {
 			terrain.update(gc, arg1);
