@@ -9,6 +9,7 @@ public class ChunkSaver implements Runnable{
 	int[][] tileArray;
 	TerrainGenerator terrain;
 	Chunk chunk;
+	Thread t = null;
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -18,8 +19,9 @@ public class ChunkSaver implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
+
 	public ChunkSaver(TerrainGenerator terrain, String file, int[][] tileArray, Chunk chunk)
 	{
 		this.tileArray = tileArray;
@@ -27,6 +29,7 @@ public class ChunkSaver implements Runnable{
 		this.chunk = chunk;
 		this.file = file;
 	}
+
 	private void saveTiles() throws IOException, InterruptedException
 	{
 		FileWriter filestream = new FileWriter(file, false);
@@ -37,6 +40,7 @@ public class ChunkSaver implements Runnable{
 			{
 			//	fw.println(relativechunkTiles[i][y]); 
 				fw.write(tileArray[i][y] + "\n");
+				Thread.yield();
 				
 			}
 		}
@@ -44,4 +48,5 @@ public class ChunkSaver implements Runnable{
 		fw.flush();
 		fw.close();
 	}
+
 }

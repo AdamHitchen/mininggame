@@ -16,11 +16,10 @@ public class ChunkLoader implements Runnable{
 	ItemSpawner isp;
 	Chunk chunk;
 	Tile[][] chunkyTiles;
-	private ArrayList chunkTiles = new ArrayList();
+	Thread t = null;
+	private ArrayList<Tile> chunkTiles = new ArrayList<Tile>();
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
 		int[][] newTiles;
 		try {
 			System.out.println(chunk.returnID()+"Loading Array");
@@ -33,7 +32,7 @@ public class ChunkLoader implements Runnable{
 				{
 					createTile(i * terrain.game.tileSize + chunk.returnID()*terrain.game.tileSize*terrain.returnChunkSize(), 
 							terrain.returnMaxY()*terrain.game.tileSize - terrain.game.tileSize * y, newTiles[i][y], y,i);
-					Thread.yield();
+					t.yield();
 				}
 			}
 			getTime = System.currentTimeMillis() - getTime;
