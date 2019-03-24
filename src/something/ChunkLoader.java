@@ -16,7 +16,6 @@ public class ChunkLoader implements Runnable{
 	ItemSpawner isp;
 	Chunk chunk;
 	Tile[][] chunkyTiles;
-	Thread t = null;
 	private ArrayList<Tile> chunkTiles = new ArrayList<Tile>();
 	@Override
 	public void run() {
@@ -32,7 +31,7 @@ public class ChunkLoader implements Runnable{
 				{
 					createTile(i * terrain.game.tileSize + chunk.returnID()*terrain.game.tileSize*terrain.returnChunkSize(), 
 							terrain.returnMaxY()*terrain.game.tileSize - terrain.game.tileSize * y, newTiles[i][y], y,i);
-					t.yield();
+					Thread.yield();
 				}
 			}
 			getTime = System.currentTimeMillis() - getTime;
@@ -62,7 +61,7 @@ public class ChunkLoader implements Runnable{
 		
 	}
 	
-	private int[][] loadTiles() throws FileNotFoundException, IOException
+	private int[][] loadTiles() throws IOException
 	{//Loads tiles from a txt file named [chunk ID].txt
 		int[][] tempTiles = new int[terrain.returnChunkSize()][terrain.returnMaxY()];
 		try(BufferedReader br = new BufferedReader(new FileReader(file)))
@@ -83,49 +82,35 @@ public class ChunkLoader implements Runnable{
 	}
 
 
-	public void createTile(int tileX, int tileY, int tileType, int row, int x) throws SlickException
-	{
-			if(tileType == 1)
-			{
-				t_dirt tile = new t_dirt(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row] = new t_dirt(tileX, tileY, row, isp);
-			}
-			else if(tileType == 2)
-			{
-				t_grass tile = new t_grass(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row]  =  new t_grass(tileX, tileY, row, isp);
-			}
-			else if( tileType == 3)
-			{
-				t_stone tile = new t_stone(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row] = tile;
-			}
-			else if( tileType == 4)
-			{
-				t_iron tile = new t_iron(tileX, tileY, row, isp);
-				chunkTiles.add(tile);	
-				chunkyTiles[x][row] = new t_iron(tileX, tileY, row, isp);			}
-			else if( tileType == 5)
-			{
-				t_silver tile = new t_silver(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row] = tile;
-			}
-			else if(tileType == 6)
-			{
-				t_Wood tile = new t_Wood(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row] = new t_Wood(tileX, tileY, row, isp);
-			}
-			else if (tileType == 9)
-			{
-				t_Workbench tile = new t_Workbench(tileX, tileY, row, isp);
-				chunkTiles.add(tile);
-				chunkyTiles[x][row] = new t_Workbench(tileX, tileY, row, isp);
-			}
+	public void createTile(int tileX, int tileY, int tileType, int row, int x) throws SlickException {
+		if (tileType == 1) {
+			t_dirt tile = new t_dirt(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = new t_dirt(tileX, tileY, row, isp);
+		} else if (tileType == 2) {
+			t_grass tile = new t_grass(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = new t_grass(tileX, tileY, row, isp);
+		} else if (tileType == 3) {
+			t_stone tile = new t_stone(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = tile;
+		} else if (tileType == 4) {
+			t_iron tile = new t_iron(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = new t_iron(tileX, tileY, row, isp);
+		} else if (tileType == 5) {
+			t_silver tile = new t_silver(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = tile;
+		} else if (tileType == 6) {
+			t_Wood tile = new t_Wood(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = new t_Wood(tileX, tileY, row, isp);
+		} else if (tileType == 9) {
+			t_Workbench tile = new t_Workbench(tileX, tileY, row, isp);
+			chunkTiles.add(tile);
+			chunkyTiles[x][row] = new t_Workbench(tileX, tileY, row, isp);
+		}
 	}
-
 }
