@@ -33,7 +33,6 @@ public class TerrainGenerator {
 	private int[][] worldArray;
 	private int[] worldRow;
 	private int worldRows;
-	private double dicks;
 	Random random = new Random();
 	public ArrayList<Integer> tileTypes;
 	public ArrayList world;
