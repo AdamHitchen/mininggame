@@ -35,11 +35,11 @@ public class Crafting {
 		this.inv = inv;
 		buttons = new ArrayList<CraftingButton>();
 		XMLReader xml = new XMLReader();
-		recipes = xml.readConfig(inv.currentDirectory + "\\res\\recipes.xml");
-		craftUI = new Image("res\\ui\\uiCrafting.png");
+		recipes = xml.readConfig(inv.currentDirectory + "/res/recipes.xml");
+		craftUI = new Image("res/ui/uiCrafting.png");
 		displayRecipes();
 		itemNames = new String[game.inv.returnID()];
-		try(BufferedReader br = new BufferedReader(new FileReader(currentDirectory + "\\res\\names.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader(currentDirectory + "/res/names.txt"))) {
 			int i = 0;
 		    for(String line; (line = br.readLine()) != null; ) {
 		        itemNames[i] = line;

@@ -1,12 +1,12 @@
-res\i\dirt.png
-res\i\grass.png
-res\i\stone.png
-res\i\iron.png
-res\i\silver.png
-res\i\wood.png
-res\i\Sticks.png
-res\i\Wooden Pickaxe.png
-res\i\Workbench.png
-res\i\StonePickaxe.png
-res\i\IronPickaxe.png
-res\i\SilverPickaxe.png
+res/i/dirt.png
+res/i/grass.png
+res/i/stone.png
+res/i/iron.png
+res/i/silver.png
+res/i/wood.png
+res/i/Sticks.png
+res/i/Wooden Pickaxe.png
+res/i/Workbench.png
+res/i/StonePickaxe.png
+res/i/IronPickaxe.png
+res/i/SilverPickaxe.png

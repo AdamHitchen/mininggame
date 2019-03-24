@@ -83,7 +83,7 @@ public class TerrainGenerator {
 		allImages[2] = new Image("res/tiles/t_stone.png");
 		allImages[3] = new Image("res/tiles/t_iron.png");
 		allImages[4] = new Image("res/tiles/t_silver.png");
-		allImages[5] = new Image("res/tiles/t_Wood.png");
+		allImages[5] = new Image("res/tiles/t_wood.png");
 		allImages[8] = new Image("res/tiles/t_Workbench.png");
 		
 			File Dimensions = new File(currentDirectory+"/maps/"+mapName+"/dimensions.dat");

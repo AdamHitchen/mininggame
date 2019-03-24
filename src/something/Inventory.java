@@ -58,7 +58,7 @@ private Game game;
 		
 		try{
 			
-   	 	String id = new Scanner( new File(currentDirectory + "\\res\\id.txt")).useDelimiter("\\A").next();
+   	 	String id = new Scanner( new File(currentDirectory + "/res/id.txt")).useDelimiter("\\A").next();
    	 	System.out.println(id);
    	 	arraySize =Integer.parseInt(id) -1; 
    	 	
@@ -76,7 +76,7 @@ private Game game;
 			}catch(Exception ex){System.out.println(ex);}
 			itemImages[i] = new Image(desu);
 		}*/
-		try(BufferedReader br = new BufferedReader(new FileReader(currentDirectory + "\\res\\items.txt"))) {
+		try(BufferedReader br = new BufferedReader(new FileReader(currentDirectory + "/res/items.txt"))) {
 			int i = 0;
 		    for(String line; (line = br.readLine()) != null; ) {
 		        itemImages[i] = new Image(line);
