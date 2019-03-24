@@ -468,23 +468,9 @@ public class TerrainGenerator {
 				
 				int rgb = 0x010101 * (int)((value + 1) * -120.0);
 				image.setRGB(x, y, rgb);
-				//System.out.print("("+x + ", " + y + ") " + dicks + " ");
 				if(x<maxX && y<maxY)
-				//	if(value < 0)
-				//	{
 						noiseTest[x][y] = (int) Math.round(value*10);
 				worldRow[x] = (int)(baseHeight + Math.round(value*10));
-
-				/*	}
-					else if (value > 0 && value < 10)
-					{
-						noiseTest[x][y] = (int) Math.round(value);
-					}
-					else if(value > 10)
-					{
-						noiseTest[x][y] = (int) Math.round(value/10);
-					}*/
-						//noiseTest2[x][y] = value;
 			}
 		}
 		ImageIO.write(image, "png", new File("noiseasd.png"));

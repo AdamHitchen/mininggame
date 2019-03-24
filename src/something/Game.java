@@ -56,7 +56,6 @@ public class Game extends BasicGame {
 	ArrayList<ArrayList> myList = new ArrayList<ArrayList>();
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try { 
 		    AppGameContainer container = new AppGameContainer(new Game("Game")); 
 		    container.setDisplayMode(1280,720,false); 
@@ -92,20 +91,10 @@ public class Game extends BasicGame {
 	{
 		return width;
 	}
-/*	public void addToArrayList(int x, int y)
-	{
-		ArrayList arrayList1 = (ArrayList) myList.get(x);
-		arrayList1.get(y);
-	}
-	public void removeFromArrayList(int x, int y)
-	{
-		ArrayList arrayList1 = (ArrayList) myList.get(x);
-		arrayList1.get(y) = null;
-	}*/
+
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		//g.translate(-cam.camPosX(), -cam.camPosY());
-		//g.translate(50,50);
+
 		Player player = (Player) players.get(0);
 		player.render(g);
 		g.setColor(Color.green);
@@ -118,11 +107,6 @@ public class Game extends BasicGame {
 		terrain.render(gc, g);
 		inv.render(g);
 		craft.render(g, gc);
-		/*for(int i = 0; i < tarpeys.size(); i ++)
-		{
-			tarpey Tarpey = (tarpey) tarpeys.get(i);
-			Tarpey.render(g);
-		}*/
 
 		for(int i = 0; i < bullets.size(); i++)
 		{
@@ -149,7 +133,6 @@ public class Game extends BasicGame {
 		try {
 			terrain = new TerrainGenerator(this, inv, isp, tileSize, cam);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -164,18 +147,6 @@ public class Game extends BasicGame {
 		Player player = new Player(100,0,this,terrain);
 		players.add(player);
 		activeTool = 1;
-
-	
-	/*	for(int i = 0; i < 5; i++)
-		{
-			float randNum = (float) (Math.random() * 1000);
-			tarpey Tarpey = new tarpey(randNum,randNum, this);
-			tarpeys.add(Tarpey);
-			Tarpey.setOffset(offset);
-			offset+=20;
-			
-		}*/
-
 
 	}
 	public int returnDwheel()
@@ -199,10 +170,8 @@ public class Game extends BasicGame {
 		try {
 			terrain.update(gc, arg1);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(gc.getInput().isKeyDown(Input.KEY_1))
@@ -302,15 +271,7 @@ public class Game extends BasicGame {
 				}
 				System.out.println("currentChunk = " + currentChunk);
 				Tile[][] tiles = chunk[currentChunk].getTiles();
-				
-				/*for(int i = 0; i < chunk[currentChunk].getTiles().size(); i++)
-				{
-				
-					Tile tile = (Tile) chunk[currentChunk].getTiles().get(i);
-					
-					if(gc.getInput().getAbsoluteMouseX() + cam.camPosX() > tile.getPos().x && gc.getInput().getAbsoluteMouseX() + cam.camPosX()< tile.getPos().x + tile.returnWidth()
-							&& gc.getInput().getAbsoluteMouseY()+ cam.camPosY() > tile.getPos().y && gc.getInput().getAbsoluteMouseY() + cam.camPosY()< tile.getPos().y + tile.returnHeight())
-					{//No longer needed, location is already detected now*/
+
 						ArrayList<Integer> miningTools = (ArrayList<Integer>) inv.returnMiningTools();
 						ArrayList<Integer> miningStrength = (ArrayList<Integer>) inv.returnMiningStrength();
 						for(int z = 0; z < miningTools.size() && z < miningStrength.size(); z ++)
@@ -380,7 +341,6 @@ public class Game extends BasicGame {
 					if(canPlace){
 						if(inv.haveItem(activeID))
 						{
-						//	terrain.createTile(x*tileSize, maxY*tileSize - tileSize * y, activeID, x);
 							inv.removeItem(activeID);
 							terrain.setWorldArray(x,y, activeID, chunk[currentChunk], true,xloc,yloc);
 							
@@ -412,7 +372,6 @@ public class Game extends BasicGame {
 				if(bullet != null && bullet.returnPosition().x > Tarpey.getPosition().x && bullet.returnPosition().x < Tarpey.getPosition().x + Tarpey.getWidth()
 						&& bullet.returnPosition().y > Tarpey.getPosition().y + 30 && bullet.returnPosition().y < Tarpey.getPosition().y + Tarpey.getHeight() + 20)
 				{
-					//Tarpey.die();
 					Tarpey = null;
 					tarpeys.remove(ii);
 					ii--;
