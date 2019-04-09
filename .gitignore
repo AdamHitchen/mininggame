@@ -43,3 +43,13 @@ maps
 bin
 Temporary Items
 .apdisk
+
+\.idea/
+
+*.rar
+
+*.zip
+
+New Text Document\.txt
+
+file\.txt
